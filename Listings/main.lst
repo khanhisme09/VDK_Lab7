@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              04/01/2024 16:38:08 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              04/01/2024 17:18:57 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -12,33 +12,52 @@ line level    source
    2          #include <REGX51.H>
    3          sbit led = P2^3;
    4          sbit button = P3^2;
-   5          
-   6          void delay_ms(unsigned int t){
-   7   1        unsigned int x, y;
-   8   1        for(x=0; x<t; x++){
-   9   2          for(y=0; y<123; y++);
-  10   2        } 
-  11   1      }
-  12          
-  13          void main(void){
-  14   1        led = 1;
-  15   1        while(1){
-  16   2          if(button==0){
-  17   3            if(led==0) led=1;
-  18   3            else led = 0;
-  19   3          }
-  20   2        }
-  21   1      }
+   5          sbit press = P3^7;
+   6          bit button_old;
+   7          
+   8          void delay_ms(unsigned int t){
+   9   1        unsigned int x, y;
+  10   1        for(x=0; x<t; x++){
+  11   2          for(y=0; y<123; y++);
+  12   2        } 
+  13   1      }
+  14          
+  15          void toggle_button(){
+  16   1        if(button == 0){
+  17   2            delay_ms(100);
+  18   2              if((button==0)&&(button_old==1)){
+  19   3                led=!led;
+  20   3              }
+  21   2              button_old=button;
+  22   2              delay_ms(100);
+  23   2          }
+  24   1      }
+  25          
+  26          void press_button(){
+  27   1        if(press ==0){
+  28   2          delay_ms(100);
+  29   2          while(press == 0){
+  30   3            led=!led;
+  31   3          }
+  32   2        }
+  33   1      }
+  34          void main(void){
+  35   1        while(1){
+  36   2          toggle_button();
+  37   2          press_button();
+  38   2        }
+  39   1      }
+  40            
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     48    ----
+   CODE SIZE        =     80    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
+   BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
 
 
